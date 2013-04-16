@@ -5,54 +5,40 @@
 
 geopy is a Python client for several popular geocoding web services.
 
-geopy makes it easy for Python developers to locate the coordinates of
-addresses, cities, countries, and landmarks across the globe using third-party
-geocoders and other data sources.
+This is a fork of geopy for updating geopy and adding some capabilities for
+display of data on google maps.
 
-geopy includes geocoder classes for the [Google Geocoding API (V3)][google_v3],
-the [Yahoo! geocoder][yahoo], [geocoder.us][geocoderus], [Bing Maps API][bing],
+Current geocoder classes for the [Google Geocoding API (V3)][google_v3],
+[geocoder.us][geocoderus], [Bing Maps API][bing], [Nokia Here][nokia],
 and several more Geocoder API services. The various geocoder classes are located in
-[geopy.geocoders][geocoders_src].
+[geopy.geocoders][geocoders_src]. Note that Yahoo has shut its geocoding
+service.
 
 [google_v3]: https://developers.google.com/maps/documentation/geocoding/
-[yahoo]: http://developer.yahoo.com/maps/rest/V1/geocode.html
 [bing]: http://www.microsoft.com/maps/developers/web.aspx
 [geocoderus]: http://geocoder.us/
 [geocoders_src]: https://github.com/geopy/geopy/tree/master/geopy/geocoders
 
-## Notes
-
-* Having `geopy.geocoders.google.GBadKeyError` issues with Google geocoder?
-  [You can fix that by updating GeoPy and updating your code.](https://github.com/geopy/geopy/tree/master/docs/google_v3_upgrade.md)
-
-## Installation
-
-Using [pip](http://www.pip-installer.org/en/latest/):
-
-    pip install geopy
-
-Or, manually: [Download the tarball from PyPI](https://pypi.python.org/pypi/geopy), unzip, and execute this in the same directory:
-
-    python setup.py install
 
 ## Basic Geocoding
 
 **Examples**
 
-Using the GoogleV3 geocoder:
+from geopy import geocoders
 
-    >>> from geopy import geocoders
-    >>> g = geocoders.GoogleV3()
-    >>> place, (lat, lng) = g.geocode("10900 Euclid Ave in Cleveland")
-    >>> print "%s: %.5f, %.5f" % (place, lat, lng)
-    10900 Euclid Ave, Cleveland, OH 44106, USA: 41.50489, -81.61027
+b = geocoders.Bing(api_key)
 
-Using the Yahoo! geocoder ([requires an Application ID](http://developer.yahoo.com/faq/index.html#appid)):
+n = geocoders.Nokia(api_id, app_code)
 
-    >>> from geopy import geocoders
-    >>> y = geocoders.Yahoo('YOUR_APP_ID_HERE')
-    >>> place, (lat, lng) = y.geocode("Thames Street, Newport, RI")
-    >>> print "%s: %.5f, %.5f" % (place, lat, lng)
-    [241-251] THAMES ST, NEWPORT, RI 02840, US: 41.48696, -71.31490
+g = geocoders.GoogleV3()
 
-More documentation and examples can be found on the [old Google Code documentation site](http://code.google.com/p/geopy/w/list).
+b.geocode("Doak nagar, madurai, india")
+>> (u'Doak Nagar, Tamil Nadu, India', (9.935750007629395, 78.08531951904297))
+
+n.geocode("Doak nagar madurai india", (9.9, 78))
+>> (u'Doak Nagar Madurai TN', (9.93575, 78.08532))
+
+g.geocode("Doak nagar madurai india")
+>> (u'Doak Nagar, Madurai, Tamil Nadu 625016, India',
+>>             (9.935720600000002, 78.0844477))
+
